@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vital Guardian - Your Health Tech Hub</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f9f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        h1, h2, h3, p {
+            color: #4CAF50;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin: 0;
+        }
+
+        header p {
+            font-size: 1.2em;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 25%;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 20px;
+        }
+
+        .sidebar h3 {
+            color: #4CAF50;
+        }
+
+        .sidebar .nav-link {
+            color: #4CAF50;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: #e8f9e8;
+        }
+
+        /* Main Content */
+        .main-content {
+            width: 70%;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-top: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"], input[type="number"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Features Section */
+        .features {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .feature {
+            background-color: #e8f9e8;
+            border-radius: 8px;
+            padding: 20px;
+            width: 30%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .feature h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        /* Health Tracking Chart */
+        .health-chart {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        canvas {
+            max-width: 100%;
+            margin: 20px 0;
+        }
+
+        /* Interactive Elements */
+        .cta-section {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 40px;
+            margin-top: 40px;
+            border-radius: 8px;
+        }
+
+        .cta-section h2 {
+            font-size: 2em;
+        }
+
+        /* Appointment Booking */
+        .appointment-section {
+            background-color: #f4f9f4;
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 40px;
+        }
+
+        .appointment-calendar {
+            margin-top: 20px;
+        }
+
+        .appointment-calendar input[type="date"] {
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header style="background-color: #2c6b2f; color: white; text-align: center; padding: 40px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <h1 style="font-size: 3em; margin: 0;">Vital Guardian</h1>
+        <p style="font-size: 1.5em; margin-top: 10px;">Your Health Tech Hub</p>
+    </header>   
+
+<div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h3>Dashboard</h3>
+        <a href="#" class="nav-link">Home</a>
+        <a href="#" class="nav-link">Track Health</a>
+        <a href="#" class="nav-link">Appointments</a>
+        <a href="#" class="nav-link">Health Insights</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Health Data Form -->
+        <h2>Track Your Health</h2>
+        <form id="healthForm">
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" placeholder="Enter your age" required>
+            </div>
+            <div class="form-group">
+                <label for="health-condition">Health Condition:</label>
+                <select id="health-condition" name="health-condition">
+                    <option value="hypertension">Hypertension</option>
+                    <option value="diabetes">Diabetes</option>
+                    <option value="asthma">Asthma</option>
+                    <option value="healthy">Healthy</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="notes">Additional Notes:</label>
+                <textarea id="notes" name="notes" rows="4" placeholder="Enter any additional information"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="medication">Are you taking medication?</label>
+                <input type="checkbox" id="medication" name="medication">
+            </div>
+            <button type="submit">Save Health Data</button>
+        </form>
+
+        <!-- Features Section -->
+        <div class="features">
+            <div class="feature">
+                <h3>Real-time Health Data</h3>
+                <p>Track your vitals with our interactive chart. Stay on top of your health progress.</p>
+                <button onclick="showHealthChart()">View Chart</button>
+            </div>
+            <div class="feature">
+                <h3>Medication Reminders</h3>
+                <p>Set and manage reminders for your medication schedule.</p>
+                <button onclick="setMedicationReminder()">Set Reminder</button>
+            </div>
+            <div class="feature">
+                <h3>Health Assessments</h3>
+                <p>Take quick health assessments to track your wellness journey.</p>
+                <button onclick="startAssessment()">Start Assessment</button>
+            </div>
+        </div>
+
+        <!-- Health Tracking Chart -->
+        <div class="health-chart" id="chartSection" style="display:none;">
+            <h3>Your Health Progress</h3>
+            <canvas id="healthChart"></canvas>
+        </div>
+
+        <!-- Appointment Booking -->
+        <div class="appointment-section">
+            <h2>Book Your Appointment</h2>
+            <p>Select a date and time to schedule your next healthcare appointment.</p>
+            <div class="appointment-calendar">
+                <input type="date" id="appointment-date">
+                <button onclick="bookAppointment()">Book Appointment</button>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="cta-section" style="background-color: #3a8f5a; padding: 60px 20px; text-align: center; color: white;">
+            <h2 style="font-size: 2.8rem; font-weight: 700; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.6);">
+                Take Control of Your Health Today
+            </h2>
+            <p style="font-size: 1.2rem; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Join Vital Guardian and start monitoring your health with cutting-edge technology, tailored insights, and real-time alerts. Stay on top of your health journey.
+            </p>
+            <a href="#" class="btn" onclick="joinNow()" style="background-color: #1e3c72; color: white; padding: 15px 30px; border-radius: 30px; font-size: 1.3rem; text-decoration: none; transition: background-color 0.3s ease; cursor: pointer;">
+                Join Vital Guardian
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Health Tracking Chart using Chart.js
+    function showHealthChart() {
+        document.getElementById('chartSection').style.display = 'block';
+        var ctx = document.getElementById('healthChart').getContext('2d');
+        var healthChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Blood Pressure',
+                    data: [120, 115, 125, 130, 110, 120, 115],
+                    borderColor: '#4CAF50',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: false
+                    }
+                }
+            }
+        });
+    }
+
+   // Medication Reminder Feature
+function setMedicationReminder() {
+    // Get the user input for medication name and time
+    let medicationName = prompt("Enter the name of the medication you are taking:");
+    let medicationTime = prompt("Enter the time for your reminder (e.g., 08:00 AM):");
+
+    if (!medicationName || !medicationTime) {
+        alert("Both medication name and reminder time are required!");
+        return;
+    }
+
+    // Validate the time format (HH:MM AM/PM)
+    const timeRegex = /^([0-1]?[0-9]|2[0-3]):([0-5]?[0-9])\s?(AM|PM)$/;
+    if (!timeRegex.test(medicationTime)) {
+        alert("Please enter a valid time in the format HH:MM AM/PM.");
+        return;
+    }
+
+    // Store medication reminder in local storage for persistence
+    let reminders = JSON.parse(localStorage.getItem("medicationReminders")) || [];
+    reminders.push({ name: medicationName, time: medicationTime, dateSet: new Date() });
+
+    localStorage.setItem("medicationReminders", JSON.stringify(reminders));
+
+    // Update UI with a confirmation message
+    alert(`Reminder set for ${medicationName} at ${medicationTime}.`);
+
+    // Optionally, you can add a countdown timer or use notifications
+    let reminderTime = new Date();
+    let [hours, minutes, period] = medicationTime.split(/[:\s]+/);
+    if (period === "PM" && hours !== "12") hours = parseInt(hours) + 12; // Convert PM hours to 24-hour format
+    reminderTime.setHours(hours, minutes, 0, 0);
+
+    let currentTime = new Date();
+    let timeDifference = reminderTime - currentTime;
+
+    if (timeDifference > 0) {
+        setTimeout(() => alert(`Time to take your ${medicationName} medication!`), timeDifference);
+    }
+}
+
+// Health Assessment Feature
+function startAssessment() {
+    // Step 1: Ask the user basic health questions
+    let symptoms = [];
+    let fever = confirm("Do you have a fever?");
+    let cough = confirm("Do you have a persistent cough?");
+    let fatigue = confirm("Are you experiencing fatigue?");
+    let difficultyBreathing = confirm("Are you having difficulty breathing?");
+    
+    // Step 2: Store responses for future analysis
+    symptoms.push(fever ? "Fever" : "");
+    symptoms.push(cough ? "Cough" : "");
+    symptoms.push(fatigue ? "Fatigue" : "");
+    symptoms.push(difficultyBreathing ? "Difficulty Breathing" : "");
+
+    // Filter out empty responses
+    symptoms = symptoms.filter(symptom => symptom !== "");
+
+    // Step 3: Analyze the responses and provide advice
+    let adviceMessage = "";
+    if (symptoms.length === 0) {
+        adviceMessage = "You seem to be symptom-free. Keep monitoring your health.";
+    } else {
+        adviceMessage = "Based on your responses, we recommend you consult with a healthcare professional.";
+    }
+
+    // Step 4: Store assessment data in local storage for future reference
+    let assessments = JSON.parse(localStorage.getItem("healthAssessments")) || [];
+    assessments.push({ symptoms: symptoms.join(", "), advice: adviceMessage, date: new Date() });
+
+    localStorage.setItem("healthAssessments", JSON.stringify(assessments));
+
+    // Step 5: Provide feedback to the user
+    alert(`Your assessment is complete. Symptoms: ${symptoms.join(", ")}. Advice: ${adviceMessage}`);
+
+    // Step 6: Optional - Give a link to consult with a professional
+    let consultLink = confirm("Would you like to book a consultation with a healthcare provider?");
+    if (consultLink) {
+        // Direct the user to the appointment booking page
+        window.location.href = "#appointmentSection";
+    }
+}
+
+// Appointment Booking Feature
+function bookAppointment() {
+    // Step 1: Validate the input date
+    let appointmentDate = document.getElementById('appointment-date').value;
+    if (!appointmentDate) {
+        alert("Please select a valid appointment date.");
+        return;
+    }
+
+    // Step 2: Get the selected time
+    let appointmentTime = prompt("Please enter the preferred time for the appointment (e.g., 10:00 AM):");
+    if (!appointmentTime) {
+        alert("You must enter a valid appointment time.");
+        return;
+    }
+
+    // Validate the time format (HH:MM AM/PM)
+    const timeRegex = /^([0-1]?[0-9]|2[0-3]):([0-5]?[0-9])\s?(AM|PM)$/;
+    if (!timeRegex.test(appointmentTime)) {
+        alert("Please enter a valid time in the format HH:MM AM/PM.");
+        return;
+    }
+
+    // Step 3: Confirm the appointment details with the user
+    let confirmAppointment = confirm(`Confirm your appointment:\nDate: ${appointmentDate}\nTime: ${appointmentTime}`);
+    if (!confirmAppointment) {
+        alert("Appointment booking was cancelled.");
+        return;
+    }
+
+    // Step 4: Store the appointment details
+    let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+    appointments.push({ date: appointmentDate, time: appointmentTime, status: "Booked", created: new Date() });
+
+    localStorage.setItem("appointments", JSON.stringify(appointments));
+
+    // Step 5: Display a success message
+    alert(`Your appointment has been successfully booked for ${appointmentDate} at ${appointmentTime}.`);
+
+    // Step 6: Optional - Add a reminder for the appointment
+    let appointmentReminderTime = new Date(appointmentDate);
+    let [hours, minutes, period] = appointmentTime.split(/[:\s]+/);
+    if (period === "PM" && hours !== "12") hours = parseInt(hours) + 12; // Convert PM hours to 24-hour format
+    appointmentReminderTime.setHours(hours, minutes, 0, 0);
+
+    let currentTime = new Date();
+    let reminderTimeDifference = appointmentReminderTime - currentTime;
+
+    if (reminderTimeDifference > 0) {
+        setTimeout(() => alert(`Reminder: Your appointment is coming up at ${appointmentTime}.`), reminderTimeDifference - (30 * 60 * 1000)); // 30 minutes before
+    }
+}
+
+// Join Vital Guardian Function
+function joinNow() {
+    // Step 1: Collect user data
+    let username = prompt("Enter your username:");
+    let email = prompt("Enter your email address:");
+    let password = prompt("Create a password:");
+
+    if (!username || !email || !password) {
+        alert("Please fill in all the required fields to join.");
+        return;
+    }
+
+    // Step 2: Validate email format using a regular expression
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert("Please enter a valid email address.");
+        return;
+    }
+
+    // Step 3: Store user information in local storage (for simplicity, we're not using a backend here)
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    users.push({ username: username, email: email, password: password, joinedDate: new Date() });
+
+    localStorage.setItem("users", JSON.stringify(users));
+
+    // Step 4: Provide success feedback to the user
+    alert(`Welcome ${username}! You have successfully joined Vital Guardian.`);
+
+    // Step 5: Optionally, give a free health consultation or offer further engagement
+    let offerConsultation = confirm("Would you like to schedule a free health consultation as part of your membership?");
+    if (offerConsultation) {
+        window.location.href = "#appointmentSection"; // Redirect to appointment section
+    }
+}
+
+    // Handle Health Form Submission
+    document.getElementById('healthForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        alert('Health Data Saved!');
+    });
+</script>
+
+</body>
+</html>

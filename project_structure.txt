@@ -1,0 +1,10 @@
+VitalGuardian/
+├── app/
+│   ├── static/         
+│   │   └── style.css   
+│   └── templates/      
+│       └── index.html  
+├── backend/            
+│   └── run.py          
+└── venv/                
+
